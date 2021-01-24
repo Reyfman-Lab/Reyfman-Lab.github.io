@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Workflow</title>
+
+<script src="site_libs/header-attrs-2.6.0/header-attrs.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.15/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  // TODO: verify this extra arbitrary padding is sensible
+  var navHeight = $(".navbar").first().height() + 25;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!--
+  Note that .tabset-dropdown was initially implemented using Glyphicons, which were dropped
+  in BS4. The idea behind the "equivalent" BS4 CSS derives from how carets are implemented
+  https://github.com/twbs/bootstrap/blob/099860/scss/mixins/_caret.scss#L1
+-->
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active-dropdown-tab:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active-dropdown-tab:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active-dropdown-tab {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sala et al. 2020</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="workflow.html">Workflow</a>
+</li>
+<li>
+  <a href="data.html">Data Downloads</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Workflow</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-12-15
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>20201005_CF_Manuscript_Repo/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200923code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200923)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200923code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200923)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongfa2a512"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> fa2a512 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongfa2a512" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version fa2a512. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  20200924_DEG_regulation_table.xlsx
+    Untracked:  20201203_Pilot_PCA_CF_vs_Control.png
+    Untracked:  20201203_Pilot_PCA_F508del_vs_Control.png
+    Untracked:  20201203_Vali_PCA_CF_vs_Control.png
+    Untracked:  20201203_Vali_Volcano_Plot_F508del_Control.png
+    Untracked:  20201204_Pilot_PCA_CF_vs_Control.png
+    Untracked:  20201214_CF_read_depth.csv
+    Untracked:  20201214_CF_read_depth.xlsx
+    Untracked:  20201214_Roast_Comparison_Pilot_and_Vali.html
+    Untracked:  20201214_Roast_Validation_Comparison.html
+    Untracked:  20201214_Vali_ASCL3_logCPM_F508del_Control.png
+    Untracked:  20201214_Vali_CFTR_logCPM_F508del_Control.png
+    Untracked:  20201214_Vali_FOXI1_logCPM_F508del_Control.png
+    Untracked:  20201214_Validation_Top_Gene_Ontology_Terms.xlsx
+    Untracked:  20201214_Validation_Volcano_Plot_F508del_Control.png
+    Untracked:  20201214_Venn_Diagram_Pilot_Validation_DEGs.png
+    Untracked:  20201215_Validation_DEGs.csv
+    Untracked:  Rplot.png
+    Untracked:  Rplot01.png
+    Untracked:  Rplot02.png
+    Untracked:  Rplot03.png
+    Untracked:  Rplot04.png
+    Untracked:  Rplot05.png
+    Untracked:  Rplot06.png
+    Untracked:  Rplot07.png
+    Untracked:  Rplot08.png
+    Untracked:  Rplot09.png
+    Untracked:  Rplot10.png
+    Untracked:  Rplot11.png
+    Untracked:  Rplot12.png
+    Untracked:  Rplot13.png
+    Untracked:  Rplot14.png
+    Untracked:  Rplot15.png
+    Untracked:  Rplot16.png
+    Untracked:  Rplot17.png
+    Untracked:  Rplot18.png
+    Untracked:  Rplot19.png
+    Untracked:  Rplot20.png
+    Untracked:  Rplot21.png
+    Untracked:  Rplot22.png
+    Untracked:  Rplot23.png
+    Untracked:  Rplot24.png
+    Untracked:  Rplot25.png
+    Untracked:  Rplot26.png
+    Untracked:  Rplot27.png
+    Untracked:  SampleList.csv
+    Untracked:  Supplemental Table 5_20201214_CF_Read_Depth_validation.xlsx
+    Untracked:  Supplemental Table 5_20201214_CF_Read_Depth_validation.xlsx.csv
+    Untracked:  Validation_Pilot_DEGs.csv
+    Untracked:  alignlog.txt
+    Untracked:  aln_stats.R
+    Untracked:  aln_stats.csv
+    Untracked:  code/CF_Manuscript_Functions.R
+    Untracked:  code/ensemblToGenes.R
+    Untracked:  data/Pilot_cohort_raw_counts_relabeled_for_upload_with_genes.txt
+    Untracked:  data/Validation_cohort_raw_counts_relabeled_for_upload_with_genes.txt
+    Untracked:  data/alignlog.txt
+    Untracked:  data/chaperome_entrez.csv
+    Untracked:  data/corrected_vali_counts.txt
+    Untracked:  data/corrected_vali_counts_with_genes.txt
+    Untracked:  data/ncbi_genes.txt
+    Untracked:  ensembl_id_and_gene_names.txt
+    Untracked:  filtered_genes.txt
+    Untracked:  gene_counts.csv
+    Untracked:  github_md.Rmd
+    Untracked:  github_md.md
+    Untracked:  github_md_files/
+    Untracked:  htseq.all.counts.txt
+    Untracked:  new_vali_sig_genes.txt
+    Untracked:  old_new_gene_comp.R
+    Untracked:  old_vali_counts_v1.txt
+    Untracked:  old_vali_counts_v2.txt
+    Untracked:  original_vali_genes.txt
+    Untracked:  roast_comparison.Rmd
+    Untracked:  up_down_genes.csv
+    Untracked:  vali_counts_halved.txt
+
+Unstaged changes:
+    Deleted:    .Rprofile
+    Deleted:    .gitattributes
+    Modified:   .gitignore
+    Deleted:    analysis/about.Rmd
+    Deleted:    analysis/license.Rmd
+    Deleted:    code/README.md
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/workflow.Rmd</code>) and HTML (<code>docs/workflow.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+fa2a512
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-12-15
+</td>
+<td>
+Updated dataset for Validation Cohort
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+bb21b6f
+</td>
+<td>
+basilkhuder
+</td>
+<td>
+2020-10-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+a8f458d
+</td>
+<td>
+basilkhuder
+</td>
+<td>
+2020-10-05
+</td>
+<td>
+wflow_publish(“analysis/workflow.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+ca6346c
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-10-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+d43aeae
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-10-01
+</td>
+<td>
+Version contains all code used to create manuscript figures
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+7811b5c
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+1e4c88a
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+ae0426c
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+570fd70
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+73b6507
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+a8928bf
+</td>
+<td>
+Basil Khuder
+</td>
+<td>
+2020-09-23
+</td>
+<td>
+wflow_publish("analysis/*")
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-libraries-functions-and-read-in-the-data" class="section level2">
+<h2>Load Libraries, Functions and Read in the Data</h2>
+<pre class="r"><code>#All R functions written in this analysis are within the &quot;CF_Manuscript_Functions&quot; file
+source(&quot;code/CF_Manuscript_Functions.R&quot;)
+#This function installs packages that aren&#39;t installed, and loads them
+install_wflow_packages(cran_pkg = c(&quot;tidyverse&quot;,&quot;magrittr&quot;,&quot;glue&quot;,&quot;ggrepel&quot;,
+                                    &quot;ggpubr&quot;, &quot;GeneOverlap&quot;, &quot;VennDiagram&quot;, &quot;DT&quot;,
+                                    &quot;pheatmap&quot;, &quot;viridis&quot;),
+                       bioconductor_pkg = c(&quot;GeneOverlap&quot;,&quot;edgeR&quot;))
+pilot_counts &lt;- read_tsv(&quot;data/Pilot_cohort_raw_counts_relabeled_for_upload_with_genes.txt&quot;)
+
+vali_counts &lt;- read_tsv(&quot;data/Validation_cohort_raw_counts_relabeled_for_upload_with_genes.txt&quot;)
+
+#Set seed for reproducibility
+set.seed(20)</code></pre>
+</div>
+<div id="generating-pca-plots" class="section level2">
+<h2>Generating PCA Plots</h2>
+<pre class="r"><code>pilot_pca &lt;- pilot_counts %&gt;% dplyr::select(-c(Ensembl_ID,ERCC1, ERCC2))
+
+pilot_pca &lt;- list(pilot_pca, pilot_pca %&gt;% dplyr::select(!contains(&quot;CompHet&quot;))) %&gt;%
+  map(~ column_to_rownames(., var = &quot;Gene_Name&quot;))
+
+pilot_groups &lt;- map(pilot_pca, ~case_when(str_detect(colnames(.x), &quot;F508del_F508del&quot;) ~ &quot;F508del&quot;,
+                                          str_detect(colnames(.x), &quot;CompHet_[\\d]*_F508del&quot;) ~ &quot;CompoundHet&quot;,
+                                          str_detect(colnames(.x), &quot;Control&quot;) ~ &quot;Control&quot;))
+
+pilot_groups &lt;- map2(pilot_groups, list(c(&quot;CompoundHet&quot;, &quot;F508del&quot;, &quot;Control&quot;), c(&quot;F508del&quot;,&quot;Control&quot;)), 
+                     ~ factor(.x, levels = .y))
+
+pilot_pca &lt;- imap(pilot_pca, ~ DGEList(counts = .x , group = pilot_groups[[.y]]) %&gt;%
+                    .[filterByExpr(.), , keep.lib.sizes=FALSE] %&gt;%
+                    calcNormFactors(.))
+
+vali_pca &lt;- vali_counts %&gt;% dplyr::select(-c(Ensembl_ID, uhrna1, uhrna2))
+
+vali_pca &lt;- list(vali_pca, vali_pca %&gt;% dplyr::select(!contains(&quot;CompHet&quot;))) %&gt;%
+  map(~ column_to_rownames(., var = &quot;Gene_Name&quot;))
+
+vali_groups &lt;- map(vali_pca, ~case_when(str_detect(colnames(.x), &quot;F508del_F508del&quot;) ~ &quot;F508del&quot;,
+                                        str_detect(colnames(.x), &quot;CompHet_[\\d]*_F508del&quot;) ~ &quot;CompoundHet&quot;,
+                                        str_detect(colnames(.x), &quot;Control&quot;) ~ &quot;Control&quot;))
+
+vali_groups &lt;- map2(vali_groups, list(c(&quot;CompoundHet&quot;, &quot;F508del&quot;, &quot;Control&quot;), c(&quot;F508del&quot;,&quot;Control&quot;)), 
+                     ~ factor(.x, levels = .y))
+
+vali_pca &lt;- imap(vali_pca, ~DGEList(counts = .x , group = vali_groups[[.y]]) %&gt;%
+                   .[filterByExpr(.), , keep.lib.sizes=FALSE] %&gt;%
+                   calcNormFactors(.))</code></pre>
+<div id="pilot-cohort-pca-plots" class="section level3">
+<h3>Pilot Cohort PCA Plots</h3>
+<pre class="r"><code>pilot_pca &lt;-
+  pmap(list(pilot_pca, pilot_groups, c(&quot;CF vs Control&quot;, &quot;F508del vs Control&quot;)), plot_pca) %&gt;%
+  map2(list(c(&quot;#fcac51&quot;, &quot;#ff0000&quot;, &quot;#0000ff&quot;),c(&quot;#ff0000&quot;, &quot;#0000ff&quot;)), ~
+       .x  + theme(text = element_text(size = 30)) + 
+         geom_point(size = 5) +
+         scale_color_manual(values = .y))
+
+pilot_pca[[2]] &lt;- pilot_pca[[2]] + scale_x_reverse() + scale_y_reverse()
+
+pilot_pca[[1]] &lt;- pilot_pca[[1]] + scale_shape_manual(values = c(17,15,16))
+pilot_pca[[2]] &lt;- pilot_pca[[2]] + scale_shape_manual(values = c(15,16))</code></pre>
+</div>
+<div id="validation-cohort-pca-plots" class="section level3">
+<h3>Validation Cohort PCA Plots</h3>
+<pre class="r"><code>vali_pca &lt;-
+  pmap(list(vali_pca, vali_groups, c(&quot;CF vs Control&quot;, &quot;F508del vs Control&quot;)), plot_pca) %&gt;%
+   map2(list(c(&quot;#fcac51&quot;, &quot;#ff0000&quot;, &quot;#0000ff&quot;),c(&quot;#ff0000&quot;, &quot;#0000ff&quot;)), ~
+         .x  + theme(text = element_text(size = 30)) + 
+         geom_point(size = 5) +
+         scale_color_manual(values = .y))
+
+vali_pca[[1]] &lt;- vali_pca[[1]] + scale_shape_manual(values = c(17,15,16))
+vali_pca[[2]] &lt;- vali_pca[[2]] + scale_shape_manual(values = c(15,16))</code></pre>
+</div>
+</div>
+<div id="differential-gene-expression" class="section level2">
+<h2>Differential Gene Expression</h2>
+<pre class="r"><code>f508_control_counts_list &lt;- list(pilot_counts %&gt;%
+                       dplyr::select(!contains(&quot;CompHet&quot;),-c(Ensembl_ID,ERCC1,ERCC2)),
+                     vali_counts %&gt;%
+                       dplyr::select(!contains(&quot;CompHet&quot;),-c(Ensembl_ID, uhrna1, uhrna2))) %&gt;%
+  map(~ column_to_rownames(., var = &quot;Gene_Name&quot;))
+
+dge_groups &lt;- map(f508_control_counts_list, ~
+                         case_when(str_detect(colnames(.x), &quot;F508del&quot;) ~ &quot;F508del&quot;,
+                                   str_detect(colnames(.x), &quot;Control&quot;) ~ &quot;Control&quot;)) %&gt;%
+  map(~factor(.x, levels = c(&quot;Control&quot;,&quot;F508del&quot;)))
+
+dge_filtered_norm &lt;- vector(mode = &quot;list&quot;, length = 2)
+ dge_filtered_norm[[1]] &lt;- DGEList(counts = f508_control_counts_list[[1]],
+                                   group = dge_groups[[1]])
+
+dge_filtered_norm[[2]] &lt;- DGEList(counts = f508_control_counts_list[[2]],
+                                   group = dge_groups[[2]])
+
+dge_filtered_norm[[1]] &lt;-
+   calcNormFactors(dge_filtered_norm[[1]][filterByExpr(dge_filtered_norm[[1]] ), ,
+                                          keep.lib.sizes = FALSE])
+
+dge_filtered_norm[[2]] &lt;-
+   calcNormFactors(dge_filtered_norm[[2]][filterByExpr(dge_filtered_norm[[2]],
+                                                       min.count = 5), ,
+                                          keep.lib.sizes = FALSE])
+
+dge_design &lt;- imap(dge_groups, ~ model.matrix(~0 + .x) %&gt;%
+                          set_colnames(., levels(dge_groups[[.y]])))
+
+dge_dsp &lt;- map2(dge_filtered_norm, dge_design, ~ estimateDisp(.x, .y, robust = TRUE))
+
+#plotBCV() to assess biological coefficient of variance
+
+dge_contrasts &lt;- map(dge_design, ~ makeContrasts(F508del - Control, levels = .x))
+
+dge_qlf_test &lt;- map2(dge_dsp, dge_design, ~ glmQLFit(.x, .y, robust = TRUE)) %&gt;%
+  map2(dge_contrasts, ~ glmQLFTest(., contrast = .y))
+dge_top_tags &lt;- map(dge_qlf_test, ~topTags(.x, n = &quot;inf&quot;))
+map(dge_top_tags, ~head(.x, n = 10))</code></pre>
+<pre><code>[[1]]
+Coefficient:  -1*Control 1*F508del 
+               logFC    logCPM        F       PValue          FDR
+SAMSN1      7.210976  9.683300 69.19179 2.559641e-08 0.0003069777
+LAPTM5      5.522935 10.819126 59.57259 9.072889e-08 0.0004531007
+CD14        5.525412  8.964458 56.71771 1.360020e-07 0.0004531007
+TYROBP      5.887248  9.937166 55.99102 1.511217e-07 0.0004531007
+PHACTR1     6.289434  8.461804 54.42953 1.901877e-07 0.0004561842
+LCP1        6.131929 10.736899 52.67574 2.476479e-07 0.0004950069
+SOD2        4.882542 10.820214 50.11160 3.685403e-07 0.0005642913
+PLAUR       5.697250 11.101292 49.20657 4.255171e-07 0.0005642913
+AC245128.3 10.045690  8.993026 55.15823 4.394573e-07 0.0005642913
+PFKFB3      6.056730  9.967869 48.58057 4.705172e-07 0.0005642913
+
+[[2]]
+Coefficient:  -1*Control 1*F508del 
+             logFC   logCPM        F       PValue          FDR
+FER1L4  -2.8093945 3.272270 60.40035 2.574141e-08 0.0004494965
+GOLGA8A -2.0433944 2.314476 36.87317 1.852423e-06 0.0161735073
+TUBGCP6 -0.9657729 4.654906 31.24315 6.585431e-06 0.0272449891
+CDK10   -1.0893249 3.931612 30.72597 7.446812e-06 0.0272449891
+AHSA2P  -1.7046242 3.490967 29.31874 1.046729e-05 0.0272449891
+CD8A    -2.8912358 2.844155 28.83821 1.178214e-05 0.0272449891
+SGSM2   -0.8275227 5.327414 27.65926 1.582422e-05 0.0272449891
+TTLL3   -1.4031078 3.235304 27.19394 1.781117e-05 0.0272449891
+TENT5B   1.9858803 4.506881 26.11420 2.353580e-05 0.0272449891
+HOPX     3.1652495 6.538092 25.64382 2.746478e-05 0.0272449891</code></pre>
+<div id="pilot-cohort-top-50-differentially-expressed-genes" class="section level3">
+<h3>Pilot Cohort Top 50 Differentially Expressed Genes</h3>
+<pre class="r"><code>datatable(head(dge_top_tags[[1]]$table, n = 50))</code></pre>
+<div id="htmlwidget-a5be6a7781f8611cddbd" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a5be6a7781f8611cddbd">{"x":{"filter":"none","data":[["SAMSN1","LAPTM5","CD14","TYROBP","PHACTR1","LCP1","SOD2","PLAUR","AC245128.3","PFKFB3","CXCR4","NAMPT","NFKBIA","C5AR1","GCA","LITAF","RNF149","PPP1R18","MBOAT7","RAC2","PPP1R15A","TSC22D3","VNN2","MSRB1","CEBPB","RILPL2","CD53","ACTB","IVNS1ABP","COTL1","MXD1","CSRNP1","ZC3H12A","GADD45B","PTPRC","ITGB2","MX2","CREM","SLA","ZYX","CNN2","ADM","SLC25A37","GPR65","THEMIS2","SOCS3","TRIB1","ADAM8","KLF6","H3-3B"],[7.21097577153988,5.52293522046534,5.52541195323074,5.88724774149513,6.28943411010191,6.13192884876938,4.88254245682863,5.69725013734991,10.0456897314797,6.05672950576722,6.18291632087363,4.85326281675322,4.20523757583225,5.98380493886826,5.71762647759352,4.16382918565026,4.50604668876213,5.52961145910978,5.11448268632749,5.47847790763408,4.26938612383052,4.59415531778622,6.56718772281184,4.4036374568713,3.90028124043842,4.91419063774858,7.2239182385273,4.32865946029315,4.16472817510312,4.92695671582153,4.61272273337619,5.11660611550114,3.96387410285769,4.52499203415118,4.89246432386263,4.60490459084664,4.44409119748515,5.82296381019272,5.91735913778961,4.45544255508351,4.78067165968701,5.30449023960483,4.48830046898954,5.23620362379573,6.32254700730749,5.67595270468648,4.24231463199012,5.13725263414652,3.65305710694174,3.36620224216567],[9.68329974843319,10.8191263037248,8.96445797307774,9.93716575206185,8.46180365068873,10.7368991025218,10.8202141462707,11.1012918738415,8.9930261089556,9.96786911563533,10.1009787884274,11.7111469771449,11.9507298288625,9.63846341599062,8.84495418983331,11.6998507782411,9.31972225971347,9.44415754642723,9.35280379516539,8.03292001828818,9.39738954587706,10.1092902104364,11.2731749638369,8.93561304139271,9.75217884974488,9.58854578759383,8.48205872093427,10.0479353096455,10.0578336466298,9.94043888731521,10.084537097889,9.45396508876964,9.34588065732729,8.41679230463889,10.0186134826512,9.93830404285469,8.29885791606607,8.05329203520164,8.37016029913708,9.55281182286026,9.93603318213629,10.3289369909552,10.5613756312505,8.31823216996952,7.82568128330175,8.33225950929702,9.29549193607641,9.32421932146277,9.71682926635147,12.0229947197008],[69.1917880964418,59.5725875301053,56.7177089508378,55.9910157873413,54.4295255475437,52.6757405338529,50.1115971053297,49.2065741806153,55.1582333185996,48.5805694131994,47.6167902737476,46.3646456522998,45.8638620001375,45.2479263021523,45.1994925474002,45.0249719770763,44.7405679264849,44.5740152277862,43.6453820022751,42.5045266381694,42.0650597695661,41.6176547391102,46.075290618985,41.5181240942607,41.1957878196101,40.9158047122331,41.0438382878519,40.6390752725544,40.324678440535,39.8543772619382,39.6151797847807,39.5812209882338,39.3510604665395,38.9484289069054,38.8256139327386,38.4318065021996,37.8490502262819,37.7476925862187,37.6661984839919,37.3330713169766,37.2732072230855,37.1682266325447,36.492648253318,36.3690287940407,36.1639347788473,36.1389093794167,36.1169767876318,36.0961069543847,35.9813727230879,35.9413501185457],[2.55964078194027e-08,9.07288865648847e-08,1.36002022751375e-07,1.51121713791335e-07,1.90187683000942e-07,2.47647929653984e-07,3.68540276089276e-07,4.25517089903412e-07,4.39457258154397e-07,4.70517207522237e-07,5.50259475563849e-07,6.7662672009095e-07,7.35743623724167e-07,8.16292449165861e-07,8.230222226865e-07,8.47777457588531e-07,8.8987524718615e-07,9.15582216595996e-07,1.07458771289931e-06,1.31240441017211e-06,1.41883860622892e-06,1.53693264363586e-06,1.55208996361888e-06,1.56463511080745e-06,1.65815150888987e-06,1.74433429931475e-06,1.80737136969316e-06,1.83433298593023e-06,1.94276710301487e-06,2.11823135332361e-06,2.21403851194534e-06,2.22801880427598e-06,2.3253458650262e-06,2.50693474954139e-06,2.56535790485443e-06,2.76292504410997e-06,3.08636412464499e-06,3.146721344374e-06,3.19618321541801e-06,3.40736452986284e-06,3.44690230235788e-06,3.79925331376454e-06,4.0108670527016e-06,4.10906832394969e-06,4.27782132218501e-06,4.29892414870031e-06,4.31751225681271e-06,4.33528102372482e-06,4.43440125316434e-06,4.4695561268564e-06],[0.000306977718978097,0.00045310067837487,0.00045310067837487,0.00045310067837487,0.000456184176446059,0.000495006936723372,0.000564291286981418,0.000564291286981418,0.000564291286981418,0.000564291286981418,0.000599932899130659,0.000610032084646432,0.000610032084646432,0.000610032084646432,0.000610032084646432,0.000610032084646432,0.000610032084646432,0.000610032084646432,0.000678291075831654,0.000781861203496406,0.000781861203496406,0.000781861203496406,0.000781861203496406,0.000781861203496406,0.000785684125009328,0.000785684125009328,0.000785684125009328,0.000785684125009328,0.000803434685050251,0.000835019672490056,0.000835019672490056,0.000835019672490056,0.000845087059371491,0.000879038210083405,0.000879038210083405,0.000920437779278081,0.000982867315448929,0.000982867315448929,0.000982867315448929,0.00100826095883361,0.00100826095883361,0.00105479627689592,0.00105479627689592,0.00105479627689592,0.00105479627689592,0.00105479627689592,0.00105479627689592,0.00105479627689592,0.00105479627689592,0.00105479627689592]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>logFC<\/th>\n      <th>logCPM<\/th>\n      <th>F<\/th>\n      <th>PValue<\/th>\n      <th>FDR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="validation-cohort-top-50-differentially-expressed-genes" class="section level3">
+<h3>Validation Cohort Top 50 Differentially Expressed Genes</h3>
+<pre class="r"><code>datatable(head(dge_top_tags[[2]]$table, n = 50))</code></pre>
+<div id="htmlwidget-2cfe7e2842bc78ec0dc7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2cfe7e2842bc78ec0dc7">{"x":{"filter":"none","data":[["FER1L4","GOLGA8A","TUBGCP6","CDK10","AHSA2P","CD8A","SGSM2","TTLL3","TENT5B","HOPX","RRAGC","RBM6","NUP210","PLD1","TAF1C","UBQLN2","DDIT4","ODF2L","MTA1","ICA1","MT-TL1","THBS1","AL139274.2","FOXA3","SMIM3","MARCHF5","GADD45A","DSC2","RNF11","NAA50","PINK1","ARRDC2","NPDC1","DIO2","SLC26A4","GDE1","FGFBP1","DHRS7","CST7","MT-TW","TRAC","UPP1","CLTB","AP1G2","CSTA","MAP2K1","IVL","LDHA","TMEM63A","PPP1CB"],[-2.80939448749514,-2.04339442918307,-0.965772858355479,-1.08932491188602,-1.70462421961703,-2.89123581202006,-0.827522676546701,-1.40310783293643,1.98588032069322,3.16524946142906,1.32992736926047,-0.751657604975992,-1.24836625816177,-0.830587863781425,-0.995996676262234,0.941639754028249,1.43542576652097,-1.00708078017098,-0.957067274442376,-1.0096993469885,1.38592347402234,3.06151524448669,3.39940803596184,-2.85269646911101,1.56053732864823,0.85502070938746,1.33587699783798,3.02850329852064,1.10575799628753,0.732701276379757,0.863998026777339,0.834715822706986,-1.61589809600004,2.47571422630104,-2.48100546946223,0.669294597252162,2.54462929784117,1.66309593511113,4.66589994601394,3.86621658220607,-2.38255811394922,2.40597448896263,1.20449179899797,-0.829951912718133,1.89146739938432,0.817222549103125,3.4624588398293,1.07747557032214,-0.710590147048681,1.21573887257866],[3.27227037340431,2.31447572740877,4.65490634575189,3.93161158758023,3.49096743651678,2.8441547156754,5.32741372827743,3.23530442266031,4.50688143905118,6.53809189148874,5.15710869924186,4.76347564169346,3.6879431146084,4.80151739122283,3.91247192914863,6.08358959921452,7.75270081666447,5.4083980630942,4.57174496598047,3.95267897601281,5.64044420723305,6.64957337745004,1.89391739432532,2.80490891019843,4.4004901187621,6.56020676498946,5.71902168311145,7.02976474775719,7.63040344298581,7.66579974102136,5.92175127269886,5.63952655613274,3.93878734539296,3.86360158942307,5.74837013105701,7.8028536700296,5.88400544218824,6.94813563019349,6.26477440684148,0.143737955797631,2.53039821514496,6.09247944601538,7.79754761784672,4.7314331202435,7.63172896386057,6.29280806242453,5.69827613034225,8.43125655221407,5.62442662431946,9.38932883563248],[60.4003481140181,36.8731673638445,31.2431484880613,30.7259729818438,29.3187440530903,28.8382107077451,27.6592588030609,27.1939406530981,26.1142007367837,25.643822816106,25.26231465301,24.8461375972567,24.6754715749915,24.5138047843493,24.4041794043799,24.2634928789584,24.1151824123693,24.0352921299055,23.8564451845631,23.689275391019,23.6064172253012,23.0635942124439,22.9274604352514,22.7146110609457,22.6995508497043,22.6477461209398,22.6358419117133,22.7179538944234,22.612440694396,22.5971313876066,22.3576035768591,22.3501009400792,22.2881094454461,22.1457002699534,22.2197542768864,22.0986448887783,22.1607869874682,21.9674212390227,22.0516770957703,21.9474906495751,21.9366822719346,21.7614094807185,21.6288977410967,21.6186942851894,21.444053611517,21.4212173258845,21.3806964804033,21.2124739558029,21.203119202152,20.9903366379229],[2.57414114455669e-08,1.85242323487972e-06,6.58543054966822e-06,7.44681241961346e-06,1.04672871540179e-05,1.17821399404411e-05,1.58242186388449e-05,1.78111657348289e-05,2.35357963705253e-05,2.7464781153077e-05,2.94507040550152e-05,3.29066399918888e-05,3.44480532246384e-05,3.5980128231479e-05,3.70607059602664e-05,3.8498972260918e-05,4.00805477255186e-05,4.09613893848241e-05,4.30098357711058e-05,4.50246108052742e-05,4.6060735535872e-05,5.49937104732941e-05,5.55854953565892e-05,5.8992900518265e-05,5.92423777397289e-05,6.01092603405572e-05,6.03103869677876e-05,6.05317130954491e-05,6.07078780061227e-05,6.09694478813214e-05,6.5224100985733e-05,6.5362433656721e-05,6.65176006367078e-05,6.92554913560679e-05,6.9599199043044e-05,7.01866612328572e-05,7.076584996557e-05,7.28554565815693e-05,7.29805722653127e-05,7.32702801357031e-05,7.34963035157779e-05,7.9244828485957e-05,8.02587560899982e-05,8.04941287430348e-05,8.46402570792534e-05,8.51992125476543e-05,8.83554510947924e-05,9.04969776203815e-05,9.07425640800602e-05,9.65272498199292e-05],[0.00044949652666249,0.0161735072637348,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303,0.0272449890685303]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>logFC<\/th>\n      <th>logCPM<\/th>\n      <th>F<\/th>\n      <th>PValue<\/th>\n      <th>FDR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="summary-of-regulation-of-genes" class="section level3">
+<h3>Summary of Regulation of Genes</h3>
+<pre class="r"><code>dge_qlf_test %&gt;% map(~summary(decideTests(.x)))</code></pre>
+<pre><code>[[1]]
+       -1*Control 1*F508del
+Down                    320
+NotSig                11105
+Up                      568
+
+[[2]]
+       -1*Control 1*F508del
+Down                    403
+NotSig                15225
+Up                     1834</code></pre>
+</div>
+<div id="logfc-plot-of-degs" class="section level3">
+<h3>logFC Plot of DEGs</h3>
+<pre class="r"><code>top_tags_tibble &lt;- map(dge_top_tags, ~ as_tibble(.x$table, rownames = &quot;Genes&quot;)) %&gt;%
+  map2(c(&quot;Pilot logFC&quot;,&quot;Validation logFC&quot;), ~ dplyr::rename(.x, !!.y := logFC)) %&gt;%
+  map2(c(&quot;Sig_Pilot&quot;, &quot;Sig_Vali&quot;), ~mutate(.x, !!.y := if_else(FDR &lt;= .05, &quot;Sig&quot;,&quot;NS&quot;))) %&gt;%
+  map(~ dplyr::select(.x, -c(logCPM,F,PValue,FDR))) %&gt;%
+  purrr::reduce(~inner_join(.x, .y, by = &quot;Genes&quot;)) %&gt;%
+  mutate(Significance = case_when(
+    Sig_Pilot == &quot;Sig&quot; &amp; Sig_Vali == &quot;Sig&quot; ~ &quot;Both&quot;,
+    Sig_Pilot == &quot;Sig&quot; &amp; Sig_Vali == &quot;NS&quot; ~ &quot;Pilot&quot;,
+    Sig_Vali == &quot;Sig&quot; &amp; Sig_Pilot == &quot;NS&quot; ~ &quot;Validation&quot;,
+    Sig_Vali == &quot;NS&quot; &amp; Sig_Pilot == &quot;NS&quot; ~ &quot;Neither&quot;)) %&gt;% 
+  mutate(Significance = factor(Significance, levels = c(&quot;Neither&quot;, &quot;Pilot&quot;, &quot;Validation&quot;,&quot;Both&quot;))) %&gt;% 
+  arrange(Significance, .by_group = TRUE)</code></pre>
+<pre class="r"><code>ggplot(data = top_tags_tibble, aes(x = `Pilot logFC`,y = `Validation logFC`,
+                                                     color = Significance)) +
+  geom_point(size = 1.5) +
+  theme(text = element_text(size = 30)) + 
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) + 
+  scale_color_manual(values=c(&quot;dark gray&quot;, &quot;#40cdd0&quot;, &quot;#cb86fe&quot;,&quot;#f8766d&quot;)) +
+  ylim(-12,12) +
+  xlim(-12,12)</code></pre>
+<p><img src="figure/workflow.Rmd/DEG%20Plot-1.png" width="1440" style="display: block; margin: auto;" /></p>
+</div>
+<div id="volcano-plots" class="section level3">
+<h3>Volcano Plots</h3>
+<pre class="r"><code>map2(dge_top_tags, c(&quot;pilot&quot;, &quot;vali&quot;), ~plot_volcano(.x, .y))</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/workflow.Rmd/unnamed-chunk-1-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/workflow.Rmd/unnamed-chunk-1-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="hypergeometric-test-between-gene-overlaps" class="section level2">
+<h2>Hypergeometric Test Between Gene Overlaps</h2>
+<pre class="r"><code>DEG_overlap &lt;- newGeneOverlap(rownames(dge_top_tags[[1]]$table[dge_top_tags[[1]]$table$FDR &lt;= .05,]),
+                              rownames(dge_top_tags[[2]]$table[dge_top_tags[[2]]$table$FDR &lt;= .05,]),
+                              genome.size = length(pilot_counts$Gene_Name))
+testGeneOverlap(DEG_overlap)</code></pre>
+<pre><code>GeneOverlap object:
+listA size=888
+listB size=2237
+Intersection size=453
+Overlapping p-value=0e+00
+Jaccard Index=0.2</code></pre>
+<div id="venn-diagram-of-overlap" class="section level3">
+<h3>Venn Diagram of Overlap</h3>
+<pre class="r"><code>windowsFonts(Arial=windowsFont(&quot;Arial&quot;))
+draw.pairwise.venn(area1 = 1341,
+                   area2 = 2690,
+                   cross.area = 453,
+                   fontfamily = &quot;Arial&quot;,
+                   category = c(&quot;Pilot Cohort&quot;, &quot;Validation Cohort&quot;),
+                   fill = c(&quot;#58d8d9&quot;, &quot;#ffcd78&quot;),
+                   cat.fontfamily = &quot;Arial&quot;,
+                   cat.cex = c(2, 2),
+                   cex = c(2, 2, 2),
+                   alpha = c(0.6,.6),
+                   cat.pos = 180)</code></pre>
+<p><img src="figure/workflow.Rmd/Gene%20Overlap%20Venn%20Diagram-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre><code>(polygon[GRID.polygon.263], polygon[GRID.polygon.264], polygon[GRID.polygon.265], polygon[GRID.polygon.266], text[GRID.text.267], text[GRID.text.268], text[GRID.text.269], text[GRID.text.270], text[GRID.text.271]) </code></pre>
+</div>
+</div>
+<div id="mrna-cpm-plots" class="section level2">
+<h2>mRNA CPM Plots</h2>
+<pre class="r"><code>mrna_genes &lt;- map2(list(pilot_counts, vali_counts), list(c(&quot;ERCC1&quot;,&quot;ERCC2&quot;),c(&quot;uhrna1&quot;,&quot;uhrna2&quot;)),
+                   ~ dplyr::select(.x, !contains(&quot;CompHet&quot;), -c(all_of(.y), Ensembl_ID))) %&gt;%
+  map(~cpmGeneExpr(.x, gene.col = &quot;Gene_Name&quot;, goi = c(&quot;CFTR&quot;,&quot;FOXI1&quot;,&quot;ASCL3&quot;)) %&gt;%
+  mutate(Samples = case_when(
+    str_detect(Samples, &quot;F508del&quot;) ~ &quot;F508del&quot;,
+    str_detect(Samples, &quot;Control&quot;) ~ &quot;Control&quot;)))</code></pre>
+<div id="pilot-mrna-cpm-plots" class="section level3">
+<h3>Pilot mRNA CPM Plots</h3>
+<pre class="r"><code>pilot_mrna &lt;- map(c(&quot;CFTR&quot;,&quot;FOXI1&quot;,&quot;ASCL3&quot;), ~ mrna_cpm_plot(mrna_genes[[1]], gene = .x) + theme(text = element_text(size = 10))) 
+map(pilot_mrna, ~ assign_in(.x, list(2,2,&quot;aes_params&quot;, 1),  1))</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/workflow.Rmd/Pilot%20mRNA%20CPM%20Plots-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/workflow.Rmd/Pilot%20mRNA%20CPM%20Plots-2.png" width="480" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/workflow.Rmd/Pilot%20mRNA%20CPM%20Plots-3.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="validation-mrna-cpm-plots" class="section level3">
+<h3>Validation mRNA CPM Plots</h3>
+<pre class="r"><code>validation_mrna &lt;- map(c(&quot;CFTR&quot;,&quot;FOXI1&quot;,&quot;ASCL3&quot;), ~ mrna_cpm_plot(mrna_genes[[2]], gene = .x) + theme(text = element_text(size = 20)))
+
+map(validation_mrna, ~ assign_in(.x, list(2,2,&quot;aes_params&quot;, 1),  1))</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/workflow.Rmd/Validation%20mRNA%20CPM%20Plots-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/workflow.Rmd/Validation%20mRNA%20CPM%20Plots-2.png" width="480" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/workflow.Rmd/Validation%20mRNA%20CPM%20Plots-3.png" width="480" style="display: block; margin: auto;" /></p>
+</div>
+<div id="heatmap-of-degs" class="section level3">
+<h3>Heatmap of DEGs</h3>
+<pre class="r"><code>dge_sig_genes &lt;- map(dge_qlf_test, ~ as.logical(abs(decideTests(.))))
+cpm_list &lt;- map2(dge_filtered_norm, dge_sig_genes, ~.x[.y,] %&gt;%
+                   edgeR::cpm(.) %&gt;%
+                   as_tibble(rownames = &quot;Genes&quot;))
+                 
+cpm_mat_list &lt;- map(cpm_list, ~ dplyr::select(., -Genes) %&gt;%
+                      as.matrix() %&gt;%
+                      t() %&gt;%
+                      scale %&gt;%
+                      t())
+
+cpm_mat_list &lt;- map2(cpm_mat_list, cpm_list, ~ set_rownames(.x,.y$Genes))
+group_annot &lt;- map2(dge_groups, cpm_mat_list, ~data.frame(groups = .x) %&gt;%
+                      set_rownames(colnames(.y)))</code></pre>
+<pre class="r"><code>plot_heatmap(cpm_mat_list[[1]], group_annot[[1]], &quot;Pilot&quot;)</code></pre>
+<p><img src="figure/workflow.Rmd/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_heatmap(cpm_mat_list[[2]], group_annot[[2]], &quot;Validation&quot;)</code></pre>
+<p><img src="figure/workflow.Rmd/unnamed-chunk-3-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="gene-ontology" class="section level2">
+<h2>Gene Ontology</h2>
+<pre class="r"><code>dge_qlf_test_entrez &lt;- map(dge_qlf_test, ~ genesToEntrez(., return_DGE_Obj = TRUE))
+go_qlf &lt;- map(dge_qlf_test_entrez, ~ goana(.x, geneid = .x$Entrez, species = &quot;Hs&quot;))</code></pre>
+<div id="pilot-validation" class="section level3">
+<h3>Pilot Validation</h3>
+<pre class="r"><code>topGO(go_qlf[[1]], n=10, sort = &quot;up&quot;)</code></pre>
+<pre><code>                                                       Term Ont    N  Up Down
+GO:0002376                            immune system process  BP 1907 263   22
+GO:0006955                                  immune response  BP 1284 212   14
+GO:0001775                                  cell activation  BP  945 177    5
+GO:0045321                             leukocyte activation  BP  859 160    4
+GO:0050896                             response to stimulus  BP 5178 432   96
+GO:0002274                     myeloid leukocyte activation  BP  507 117    1
+GO:0002252                          immune effector process  BP  839 151    5
+GO:0007154                               cell communication  BP 3628 338   72
+GO:0002366 leukocyte activation involved in immune response  BP  531 114    4
+GO:0002263      cell activation involved in immune response  BP  535 114    4
+                   P.Up    P.Down
+GO:0002376 4.020796e-63 1.0000000
+GO:0006955 4.014909e-62 0.9999971
+GO:0001775 6.753134e-59 1.0000000
+GO:0045321 2.900781e-52 1.0000000
+GO:0050896 2.270427e-50 1.0000000
+GO:0002274 2.976527e-47 0.9999996
+GO:0002252 4.760254e-47 0.9999996
+GO:0007154 1.120875e-42 0.9999316
+GO:0002366 1.244801e-42 0.9998447
+GO:0002263 2.743383e-42 0.9998591</code></pre>
+<pre class="r"><code>topGO(go_qlf[[1]], n=10, sort = &quot;down&quot;)</code></pre>
+<pre><code>                                                        Term Ont   N Up Down
+GO:0005929                                            cilium  CC 382 10   46
+GO:0003341                                   cilium movement  BP  49  0   14
+GO:0031514                                     motile cilium  CC 104  1   19
+GO:0035082                                  axoneme assembly  BP  44  1   13
+GO:0005930                                           axoneme  CC  89  1   17
+GO:0097014                                     ciliary plasm  CC  90  1   17
+GO:0060271                                   cilium assembly  BP 294  9   30
+GO:0044782                               cilium organization  BP 303  9   30
+GO:0001578                      microtubule bundle formation  BP  63  1   13
+GO:0032838 plasma membrane bounded cell projection cytoplasm  CC 154  7   19
+                P.Up       P.Down
+GO:0005929 0.9941977 2.849650e-17
+GO:0003341 1.0000000 3.965164e-11
+GO:0031514 0.9955450 6.690231e-11
+GO:0035082 0.8981393 1.253724e-10
+GO:0005930 0.9902425 3.327317e-10
+GO:0097014 0.9907391 3.999092e-10
+GO:0060271 0.9647728 8.512924e-10
+GO:0044782 0.9726074 1.755313e-09
+GO:0001578 0.9621197 1.563430e-08
+GO:0032838 0.6659782 5.881904e-08</code></pre>
+<pre class="r"><code>topGO(go_qlf[[2]], n=10, sort = &quot;up&quot;)</code></pre>
+<pre><code>                                                       Term Ont    N  Up Down
+GO:0002376                            immune system process  BP 2354 571   66
+GO:0006955                                  immune response  BP 1599 426   51
+GO:0001775                                  cell activation  BP 1171 342   31
+GO:0002274                     myeloid leukocyte activation  BP  590 220   11
+GO:0043299                          leukocyte degranulation  BP  490 196    6
+GO:0002444              myeloid leukocyte mediated immunity  BP  507 200    8
+GO:0045321                             leukocyte activation  BP 1051 314   27
+GO:0002446                     neutrophil mediated immunity  BP  463 186    7
+GO:0002366 leukocyte activation involved in immune response  BP  625 223   10
+GO:0042119                            neutrophil activation  BP  464 186    7
+                   P.Up    P.Down
+GO:0002376 8.021656e-65 0.4452284
+GO:0006955 3.199435e-58 0.1426465
+GO:0001775 6.417686e-56 0.6109977
+GO:0002274 7.862417e-55 0.9353670
+GO:0043299 2.268667e-54 0.9932689
+GO:0002444 2.452310e-54 0.9705804
+GO:0045321 1.887067e-53 0.6690325
+GO:0002446 6.674400e-52 0.9726579
+GO:0002366 9.804140e-52 0.9792673
+GO:0042119 9.832625e-52 0.9731086</code></pre>
+<pre class="r"><code>topGO(go_qlf[[2]], n=10, sort = &quot;down&quot;)</code></pre>
+<pre><code>                                                       Term Ont    N  Up Down
+GO:0005815                    microtubule organizing center  CC  687  82   49
+GO:0005813                                       centrosome  CC  486  57   38
+GO:0044782                              cilium organization  BP  357  27   31
+GO:0060271                                  cilium assembly  BP  342  27   30
+GO:0042101                          T cell receptor complex  CC   16   2    7
+GO:0015630                         microtubule cytoskeleton  CC 1086 132   60
+GO:0034451                             centriolar satellite  CC   28   3    8
+GO:0120031 plasma membrane bounded cell projection assembly  BP  514  71   34
+GO:0005929                                           cilium  CC  496  35   33
+GO:0042105               alpha-beta T cell receptor complex  CC    5   1    4
+                P.Up       P.Down
+GO:0005815 0.7419361 8.258130e-10
+GO:0005813 0.7582599 6.430677e-09
+GO:0044782 0.9993465 1.546623e-08
+GO:0060271 0.9983196 2.112881e-08
+GO:0042101 0.6203806 1.030180e-07
+GO:0015630 0.7185523 1.429524e-07
+GO:0034451 0.7074933 5.776358e-07
+GO:0120031 0.2336155 2.062687e-06
+GO:0005929 0.9999857 2.585079e-06
+GO:0042105 0.4923379 2.736092e-06</code></pre>
+</div>
+</div>
+<div id="roast-analysis" class="section level2">
+<h2>Roast Analysis</h2>
+<pre class="r"><code>entrez_chaperome &lt;- read_csv(&quot;data/chaperome_entrez.csv&quot;, col_names = FALSE) %&gt;% pull(X1)</code></pre>
+<pre><code>
+-- Column specification ----------------------------------------------------------------
+cols(
+  X1 = col_double()
+)</code></pre>
+<pre class="r"><code>entrez_index &lt;- map(dge_dsp, ~ genesToEntrez(.x, return_DGE_Obj = FALSE) %&gt;%
+                    .$NCBI_ID %in% entrez_chaperome)</code></pre>
+<pre class="r"><code>pmap(list(dge_dsp, entrez_index, dge_design, dge_contrasts), ~ 
+      roast.DGEList(..1, ..2, ..3, ..4, nrot = 10000000))</code></pre>
+<pre><code>[[1]]
+         Active.Prop   P.Value
+Down       0.4194757 0.00219935
+Up         0.1011236 0.99780070
+UpOrDown   0.4194757 0.00439870
+Mixed      0.5205993 0.00490890
+
+[[2]]
+         Active.Prop     P.Value
+Down       0.3026706 0.031090598
+Up         0.2700297 0.968909452
+UpOrDown   0.3026706 0.062181194
+Mixed      0.5727003 0.007242199</code></pre>
+<pre class="r"><code>map2(dge_qlf_test_entrez, entrez_index, ~ barcodeplot(.x$table$logFC, index = .y, xlab = &quot;logFC&quot;))</code></pre>
+<p><img src="figure/workflow.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/workflow.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[[1]]
+NULL
+
+[[2]]
+NULL</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17134)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] edgeR_3.30.3        limma_3.44.3        viridis_0.5.1      
+ [4] viridisLite_0.3.0   pheatmap_1.0.12     DT_0.15            
+ [7] VennDiagram_1.6.20  futile.logger_1.4.3 GeneOverlap_1.24.0 
+[10] ggpubr_0.4.0        ggrepel_0.8.2       glue_1.4.2         
+[13] magrittr_1.5        forcats_0.5.0       stringr_1.4.0      
+[16] dplyr_1.0.2         purrr_0.3.4         readr_1.4.0        
+[19] tidyr_1.1.2         tibble_3.0.3        ggplot2_3.3.2      
+[22] tidyverse_1.3.0    
+
+loaded via a namespace (and not attached):
+  [1] colorspace_1.4-1     ggsignif_0.6.0       ellipsis_0.3.1      
+  [4] rio_0.5.16           rprojroot_1.3-2      fs_1.5.0            
+  [7] rstudioapi_0.11      farver_2.0.3         bit64_4.0.5         
+ [10] AnnotationDbi_1.50.3 fansi_0.4.1          lubridate_1.7.9     
+ [13] xml2_1.3.2           splines_4.0.2        knitr_1.30          
+ [16] jsonlite_1.7.1       workflowr_1.6.2      broom_0.7.0         
+ [19] GO.db_3.11.4         dbplyr_1.4.4         BiocManager_1.30.10 
+ [22] compiler_4.0.2       httr_1.4.2           backports_1.1.10    
+ [25] assertthat_0.2.1     cli_2.0.2            later_1.1.0.1       
+ [28] formatR_1.7          htmltools_0.5.0.9003 tools_4.0.2         
+ [31] gtable_0.3.0         Rcpp_1.0.5           Biobase_2.48.0      
+ [34] carData_3.0-4        cellranger_1.1.0     jquerylib_0.1.2     
+ [37] vctrs_0.3.4          crosstalk_1.1.0.1    xfun_0.19           
+ [40] openxlsx_4.2.2       rvest_0.3.6          lifecycle_0.2.0     
+ [43] gtools_3.8.2         statmod_1.4.34       rstatix_0.6.0       
+ [46] org.Hs.eg.db_3.11.4  scales_1.1.1         hms_0.5.3           
+ [49] promises_1.1.1.9001  parallel_4.0.2       lambda.r_1.2.4      
+ [52] RColorBrewer_1.1-2   yaml_2.2.1           curl_4.3            
+ [55] memoise_1.1.0        gridExtra_2.3        sass_0.2.0.9005     
+ [58] RSQLite_2.2.0        stringi_1.5.3        S4Vectors_0.26.1    
+ [61] BiocGenerics_0.34.0  caTools_1.18.0       zip_2.1.1           
+ [64] rlang_0.4.8.9001     pkgconfig_2.0.3      bitops_1.0-6        
+ [67] evaluate_0.14        lattice_0.20-41      htmlwidgets_1.5.1   
+ [70] labeling_0.3         bit_4.0.4            tidyselect_1.1.0    
+ [73] R6_2.4.1             IRanges_2.22.2       gplots_3.1.0        
+ [76] generics_0.0.2       DBI_1.1.0            pillar_1.4.6        
+ [79] haven_2.3.1          whisker_0.4          foreign_0.8-80      
+ [82] withr_2.3.0          abind_1.4-5          modelr_0.1.8        
+ [85] crayon_1.3.4         car_3.0-10           futile.options_1.0.1
+ [88] KernSmooth_2.23-17   rmarkdown_2.6.0      locfit_1.5-9.4      
+ [91] readxl_1.3.1         data.table_1.13.0    blob_1.2.1          
+ [94] git2r_0.27.1         reprex_0.3.0         digest_0.6.26       
+ [97] httpuv_1.5.4         stats4_4.0.2         munsell_0.5.0       
+[100] bslib_0.2.2.9000    </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+    $(this).siblings().removeClass("active-dropdown-tab");
+    $(this).addClass("active-dropdown-tab");
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
